@@ -4,11 +4,11 @@ import type { Suggestion, FormData } from "../types";
 export const useGiftSuggestions = () => {
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState<string | null>(null);
 
   const fetchSuggestions = async (formData: FormData) => {
     setIsLoading(true);
-    setError("");
+    setError(null);
 
     try {
       const response = await fetch("/api/suggestions", {
@@ -20,16 +20,16 @@ export const useGiftSuggestions = () => {
       });
 
       const data = await response.json();
-      if (data.suggestions) {
-        setSuggestions(data.suggestions);
-        return true;
-      } else {
-        setError("Hediye önerileri alınamadı.");
-        return false;
+
+      if (!response.ok) {
+        throw new Error(data.message || "Bir hata oluştu");
       }
-    } catch (error) {
-      setError("Hediye önerileri alınırken bir hata oluştu.");
-      return false;
+
+      setSuggestions(data.suggestions);
+      return data.suggestions;
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Bir hata oluştu");
+      return [];
     } finally {
       setIsLoading(false);
     }
@@ -40,6 +40,5 @@ export const useGiftSuggestions = () => {
     isLoading,
     error,
     fetchSuggestions,
-    clearError: () => setError(""),
   };
 };
