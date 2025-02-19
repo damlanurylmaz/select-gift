@@ -1,6 +1,6 @@
 {
   "functions": {
-    "api/suggestions": {
+    "pages/api/suggestions.ts": {
       "maxDuration": 60
     }
   },
