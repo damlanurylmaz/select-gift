@@ -1,0 +1,7 @@
+{
+  "functions": {
+    "api/suggestions.ts": {
+      "maxDuration": 300
+    }
+  }
+}

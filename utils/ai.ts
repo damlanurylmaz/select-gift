@@ -39,7 +39,7 @@ async function translateSuggestions(suggestions: any[]) {
           await translateBatch([
             suggestion.title.replace(/[*"]/g, ""),
             suggestion.description,
-            suggestion.stores,
+            suggestion.stores.replace(/Available at: /i, ""),
           ]);
 
         const priceMatch = suggestion.price.match(/\$(\d+)/);
@@ -48,14 +48,21 @@ async function translateSuggestions(suggestions: any[]) {
 
         return {
           title: translatedTitle,
-          description: translatedDesc.replace(/\$\d+/g, ""),
-          price: priceMatch
-            ? `$${priceUSD} (≈${priceTRY.toLocaleString("tr-TR")} TL)`
-            : "",
-          stores: translatedStores.replace(/Available at: /i, "Mağazalar: "),
+          description: translatedDesc,
+          price: priceMatch ? `${priceTRY.toLocaleString("tr-TR")} TL` : "",
+          stores: `Mağazalar: ${translatedStores}`,
         };
       })
     );
+
+    const isValid = translatedSuggestions.every(
+      (s) => s.title && s.description && s.stores
+    );
+
+    if (!isValid) {
+      console.error("Some translations are missing");
+      return suggestions;
+    }
 
     return translatedSuggestions;
   } catch (error) {
@@ -113,16 +120,32 @@ Budget: $${budgetUSD} (strict limit)
 Occasion: ${translateOccasion(preferences.occasion)}
 
 IMPORTANT:
+- Generate EXACTLY 4 suggestions
 - Suggestions MUST be related to their interests (${preferences.interests.join(
     ", "
   )})
 - Each item must be available in Turkey
 - Prices must be within budget
-- Include specific store names where items can be purchased
+- Include specific Turkish store names (e.g. Trendyol, Hepsiburada, D&R, Teknosa)
 
 Format each suggestion exactly like this:
 
 1. [Item Name]
+[Item Description]
+$[Price]
+Available at: [Store1], [Store2], [Store3]
+
+2. [Item Name]
+[Item Description]
+$[Price]
+Available at: [Store1], [Store2], [Store3]
+
+3. [Item Name]
+[Item Description]
+$[Price]
+Available at: [Store1], [Store2], [Store3]
+
+4. [Item Name]
 [Item Description]
 $[Price]
 Available at: [Store1], [Store2], [Store3]`;
@@ -131,14 +154,20 @@ Available at: [Store1], [Store2], [Store3]`;
     const response = await cohere.generate({
       prompt,
       model: "command",
-      maxTokens: 500,
+      maxTokens: 1000,
       temperature: 0.7,
     });
 
     const suggestions = parseAIResponse(response.generations[0].text);
+
+    if (suggestions.length !== 4) {
+      throw new Error("AI must generate exactly 4 suggestions");
+    }
+
     const translatedSuggestions = await translateSuggestions(suggestions);
 
-    if (!translatedSuggestions) {
+    if (!translatedSuggestions || translatedSuggestions.length !== 4) {
+      console.error("Translation failed, returning original suggestions");
       return suggestions;
     }
 

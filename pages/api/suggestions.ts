@@ -1,6 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { generateGiftSuggestions } from "../../utils/ai";
 
+export const config = {
+  maxDuration: 300, // 5 dakika timeout
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse

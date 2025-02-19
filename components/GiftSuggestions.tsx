@@ -28,7 +28,6 @@ export default function GiftSuggestions({
   onBack,
 }: GiftSuggestionsProps) {
   const theme = useTheme();
-  const giftSuggestions = suggestions;
 
   if (!suggestions.length) {
     return null;
@@ -78,66 +77,55 @@ export default function GiftSuggestions({
         Forma Dön
       </Button>
 
-      <Grid container spacing={2}>
-        {giftSuggestions.map((suggestion, index) => (
-          <Grid item xs={12} sm={6} key={index}>
+      <Grid container spacing={3}>
+        {suggestions.map((suggestion, index) => (
+          <Grid item xs={12} md={6} key={index}>
             <Card
-              elevation={2}
+              elevation={3}
               sx={{
+                height: "100%",
                 display: "flex",
                 flexDirection: "column",
-                transition: "all 0.3s ease",
+                transition: "transform 0.2s ease-in-out",
                 "&:hover": {
-                  transform: "translateY(-4px)",
-                  boxShadow: theme.shadows[4],
+                  transform: "translateY(-5px)",
                 },
-                borderRadius: 2,
-                height: "100%",
               }}
             >
-              <CardContent>
-                <Typography
-                  variant="h6"
-                  sx={{
-                    fontWeight: 600,
-                    color: theme.palette.primary.main,
-                    mb: 1,
-                  }}
-                >
+              <CardContent sx={{ flexGrow: 1 }}>
+                <Typography variant="h6" gutterBottom color="primary">
                   {suggestion.title}
                 </Typography>
                 <Typography
                   variant="body2"
                   color="text.secondary"
-                  sx={{
-                    mb: 2,
-                    minHeight: "80px",
-                  }}
+                  sx={{ mb: 2, minHeight: "60px" }}
                 >
                   {suggestion.description}
                 </Typography>
-                <Typography
-                  variant="body2"
+                <Box
                   sx={{
-                    color: theme.palette.text.secondary,
-                    mt: 2,
-                    fontSize: "0.875rem",
-                    fontStyle: "italic",
-                  }}
-                >
-                  {suggestion.stores}
-                </Typography>
-                <Typography
-                  variant="subtitle1"
-                  sx={{
-                    fontWeight: "bold",
-                    color: theme.palette.success.main,
-                    textAlign: "right",
                     mt: "auto",
+                    pt: 2,
+                    borderTop: 1,
+                    borderColor: "divider",
                   }}
                 >
-                  {suggestion.price}
-                </Typography>
+                  <Typography
+                    variant="subtitle1"
+                    color="success.main"
+                    fontWeight="bold"
+                  >
+                    {suggestion.price}
+                  </Typography>
+                  <Typography
+                    variant="body2"
+                    color="text.secondary"
+                    sx={{ mt: 1 }}
+                  >
+                    {suggestion.stores}
+                  </Typography>
+                </Box>
               </CardContent>
             </Card>
           </Grid>
