@@ -156,7 +156,6 @@ Available at: [Store1], [Store2], [Store3]`;
       model: "command",
       maxTokens: 800,
       temperature: 0.7,
-      timeout: 50000, // 50 saniye timeout
     });
 
     if (!response.generations?.[0]?.text) {
