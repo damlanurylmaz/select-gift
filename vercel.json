@@ -1,7 +1,7 @@
 {
   "functions": {
     "api/suggestions.ts": {
-      "maxDuration": 300
+      "maxDuration": 60
     }
   },
   "public": true,

@@ -154,26 +154,33 @@ Available at: [Store1], [Store2], [Store3]`;
     const response = await cohere.generate({
       prompt,
       model: "command",
-      maxTokens: 1000,
+      maxTokens: 800,
       temperature: 0.7,
+      timeout: 50000, // 50 saniye timeout
     });
+
+    if (!response.generations?.[0]?.text) {
+      throw new Error("AI yanıt üretemedi");
+    }
 
     const suggestions = parseAIResponse(response.generations[0].text);
 
-    if (suggestions.length !== 4) {
-      throw new Error("AI must generate exactly 4 suggestions");
+    if (!suggestions || suggestions.length !== 4) {
+      throw new Error("4 öneri alınamadı");
     }
 
     const translatedSuggestions = await translateSuggestions(suggestions);
 
     if (!translatedSuggestions || translatedSuggestions.length !== 4) {
-      console.error("Translation failed, returning original suggestions");
+      console.error("Çeviri başarısız, orijinal önerileri döndürüyorum");
       return suggestions;
     }
 
     return translatedSuggestions;
   } catch (error) {
     console.error("AI Error:", error);
-    throw error;
+    throw new Error(
+      `AI hatası: ${error instanceof Error ? error.message : "Bilinmeyen hata"}`
+    );
   }
 };
