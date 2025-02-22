@@ -11,6 +11,7 @@ Gift Advisor, kullanıcıların ilgi alanlarına, yaş ve cinsiyetlerine göre k
 - Next.js
 - TypeScript
 - Cohere API
+- MyMemory Translation API 
 - CSS
 
 # Kurulum
