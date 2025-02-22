@@ -1,5 +1,5 @@
 # Gift Advisor
-Gift Advisor, kullanıcıların ilgi alanlarına, yaş ve cinsiyetlerine göre kişiselleştirilmiş hediye önerileri sunan bir web uygulamasıdır.
+Gift Advisor, kullanıcıların ilgi alanlarına, yaş ve cinsiyetlerine göre kişiselleştirilmiş hediye önerileri sunan bir web uygulamasıdır. Proje geliştirme sürecinde Cursor AI destekli kod geliştirme aracı kullanılmıştır.
 Özellikler:
 - Kişiselleştirilmiş hediye önerileri
 - Yaş, cinsiyet ve ilgi alanlarına göre filtreleme
@@ -13,6 +13,7 @@ Gift Advisor, kullanıcıların ilgi alanlarına, yaş ve cinsiyetlerine göre k
 - Cohere API
 - MyMemory Translation API 
 - CSS
+- Cursor AI (Kod geliştirme desteği)
 
 # Kurulum
 
