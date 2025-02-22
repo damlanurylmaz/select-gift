@@ -118,6 +118,8 @@ export default function Home() {
                   sx={{ maxWidth: "600px", mx: "auto" }}
                 >
                   Sevdikleriniz için mükemmel hediyeyi bulmak artık çok kolay!
+                  <br />
+                  (Hediye alacağınız kişinin bilgilerini giriniz)
                 </Typography>
               </Box>
 
